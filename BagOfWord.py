@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
-
+import math
 
 gramatica = []
 bagOfWords = []
-tabelaSimilaridade = []
+tabelaSimilaridade = [[],[]]
 
 # Artigos definidos e indefinidos da lingua brasileira
 artigos = [
@@ -20,7 +20,7 @@ preposicoes = [
 	"para","perante","por","salvo","sem","segundo","sob","sobre","trás","tras"
 ]
 
-#Adicionando Artigos e Preposições na gramatica 
+#Adicionar Artigos e Preposições na gramatica 
 def addArtigoPrepo(): 
 	for artigo in artigos:
 		gramatica.append(artigo)
@@ -45,7 +45,7 @@ def removeAp(file):
 			texto.remove(palavra)
 	return texto
 
-#Remove artigos e preposições e adiciona na bagOfWords
+#Remover artigos e preposições do arquivo texto
 def adicionarbagOfWords(file):	
 	arquivo = removeAp(openFile(file + ".txt"))
 	for word in arquivo:
@@ -56,22 +56,33 @@ def adicionarbagOfWords(file):
 #Calcular similaridade de dois textos
 def similaridade(fileA,fileB):
 	addArtigoPrepo()
-	adicionarbagOfWords(fileA)
-	adicionarbagOfWords(fileB)
-	tamanhoA = len(fileA + ".txt")
-	tamanhoB = len(fileB + ".txt")
+	array1 = adicionarbagOfWords(fileA)
+	array2 = adicionarbagOfWords(fileB)							
 
-		
-	for i in range(0,tamanhoA):
-		if i in bagOfWords:
-			for j in range(0,tamanhoB):
-				if j in bagOfWords:
-					tabelaSimilaridade.append((i,j))
-	return tabelaSimilaridade										
-			
-print(tabelaSimilaridade)			
-print(similaridade("docA","docB"))
-		
+	for i in range(0,len(bagOfWords)):
+		if bagOfWords[i] in array1:
+			tabelaSimilaridade[0].append(1)
+		else:
+			tabelaSimilaridade[0].append(0)
 
+		if bagOfWords[i] in array2:
+			tabelaSimilaridade[1].append(1)
+		else:
+			tabelaSimilaridade[1].append(0)	
 
-	
+similaridade("docA","docB")
+
+def calcularSimilaridade():
+	resultB = 0
+	resultC = 0
+	resultA = 0
+	for i in range(0,len(tabelaSimilaridade)):
+		if tabelaSimilaridade[0][i] == tabelaSimilaridade[1][i]:
+			resultA += tabelaSimilaridade[0][i] * tabelaSimilaridade[1][i]
+	for i in range(0,len(tabelaSimilaridade)+1):
+		if tabelaSimilaridade[0][i] == 1 or tabelaSimilaridade[1][i] == 1:
+			resultB += (tabelaSimilaridade[0][i] **2)
+			resultC += (tabelaSimilaridade[1][i] **2)		 
+	return  resultA / (math.sqrt(resultB) * math.sqrt(resultC))	
+
+print("Resultado: " + str(calcularSimilaridade()))			
