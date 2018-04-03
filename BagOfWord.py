@@ -53,25 +53,24 @@ def adicionarbagOfWords(file):
 			bagOfWords.append(word)
 	return arquivo		
 
-#Calcular similaridade de dois textos
+#Criar tabela de similaridade
 def similaridade(fileA,fileB):
 	addArtigoPrepo()
-	array1 = adicionarbagOfWords(fileA)
-	array2 = adicionarbagOfWords(fileB)							
+	arrayFile1 = adicionarbagOfWords(fileA)
+	arrayFile2 = adicionarbagOfWords(fileB)							
 
 	for i in range(0,len(bagOfWords)):
-		if bagOfWords[i] in array1:
+		if bagOfWords[i] in arrayFile1:
 			tabelaSimilaridade[0].append(1)
 		else:
 			tabelaSimilaridade[0].append(0)
 
-		if bagOfWords[i] in array2:
+		if bagOfWords[i] in arrayFile2:
 			tabelaSimilaridade[1].append(1)
 		else:
 			tabelaSimilaridade[1].append(0)	
 
-similaridade("docA","docB")
-
+#Calcular Similaridade 
 def calcularSimilaridade():
 	resultB = 0
 	resultC = 0
@@ -83,6 +82,4 @@ def calcularSimilaridade():
 		if tabelaSimilaridade[0][i] == 1 or tabelaSimilaridade[1][i] == 1:
 			resultB += (tabelaSimilaridade[0][i] **2)
 			resultC += (tabelaSimilaridade[1][i] **2)		 
-	return  resultA / (math.sqrt(resultB) * math.sqrt(resultC))	
-
-print("Resultado: " + str(calcularSimilaridade()))			
+	return  resultA / (math.sqrt(resultB) * math.sqrt(resultC))				
